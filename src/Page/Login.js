@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Form, FormGroup, FormControl, ControlLabel, Col, Button,
+  Panel, Form, FormGroup, FormControl, ControlLabel, Col, Button,
 } from 'react-bootstrap'
 
 const regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -10,6 +10,10 @@ const validateEmail = (email) => {
 };
 
 class LoginPage extends React.Component {
+  pageTitle = (
+    <h3>Sign In</h3>
+  );
+
   state = {
     formState: {
       email: null,
@@ -73,7 +77,7 @@ class LoginPage extends React.Component {
     console.log(this.state.formValue);
   }
 
-  render() {
+  renderSignInForm() {
     return (
       <Form horizontal>
         <FormGroup validationState = { this.state.formState.email } >
@@ -103,11 +107,21 @@ class LoginPage extends React.Component {
         <FormGroup>
           <Col smOffset = { 2 } sm = { 10 } >
             <Button onClick = { this.signIn } >
-              Sign in
+              Sign In
             </Button>
           </Col>
         </FormGroup>
       </Form>
+    );
+  }
+
+  render() {
+    return (
+      <div className="egobie-login-page">
+        <Panel header = { this.pageTitle } >
+          { this.renderSignInForm() }
+        </Panel>
+      </div>
     );
   }
 }

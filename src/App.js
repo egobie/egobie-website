@@ -1,11 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+
 import LoginPage from './Page/Login';
+import ReservationPage from './Page/Reservation';
 
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
-      <LoginPage />
+      <BrowserRouter>
+        <div>
+          <Route exact path = "/" component = { ReservationPage } />
+          <Route path = "/login" component = { LoginPage } />
+          <Route path = "/reservation" component = { ReservationPage } />
+        </div>
+      </BrowserRouter>
     );
   }
 }
