@@ -128,9 +128,6 @@ class LoginPage extends React.Component {
         /><br />
         <RaisedButton
           label = "Submit"
-          iconStyleLeft = {{
-            display: 'none',
-          }}
           primary = { true }
           onClick = { this.signIn }
           style = {{

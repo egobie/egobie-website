@@ -1,10 +1,7 @@
 import React from 'react';
 import {
   Redirect,
-} from 'react-router-dom'
-import {
-  Table,
-} from 'react-bootstrap';
+} from 'react-router'
 
 
 class ReservationPage extends React.Component {
@@ -18,7 +15,7 @@ class ReservationPage extends React.Component {
     }
 
     return (
-      <Table striped bordered condensed hover>
+      <table>
         <thead>
           <tr>
             <th>#</th>
@@ -46,7 +43,7 @@ class ReservationPage extends React.Component {
             <td>@twitter</td>
           </tr>
         </tbody>
-      </Table>
+      </table>
     );
   }
 }
