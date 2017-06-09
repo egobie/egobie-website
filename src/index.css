@@ -3,3 +3,6 @@ div.egobie-login-page {
   justify-content: center;
   align-items: center;
   height: 100vh; }
+
+div.egobie-reservation-list-page {
+  height: 100vh; }

@@ -7,7 +7,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import LoginPage from './Page/Login';
-import ReservationPage from './Page/Reservation';
+import ReservationListPage from './Page/ReservationList';
 import eGobieReducer from './Reducer';
 import eGobieSaga from './Saga';
 
@@ -39,9 +39,9 @@ class App extends React.Component {
         <Provider store = { store } >
           <Router history = { history }>
             <div>
-              <Route exact path = "/" component = { ReservationPage } />
+              <Route exact path = "/" component = { ReservationListPage } />
               <Route path = "/login" component = { LoginPage } />
-              <Route path = "/reservation" component = { ReservationPage } />
+              <Route path = "/reservation" component = { ReservationListPage } />
             </div>
           </Router>
         </Provider>

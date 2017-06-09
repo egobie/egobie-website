@@ -1,49 +1,57 @@
 import React from 'react';
-import {
-  Redirect,
-} from 'react-router'
+import AppBar from 'material-ui/AppBar';
+import Paper from 'material-ui/Paper';
+import IconButton from 'material-ui/IconButton';
+import LocalCarWash from 'material-ui/svg-icons/maps/local-car-wash';
+import { List, ListItem } from 'material-ui/List';
 
 
 class ReservationPage extends React.Component {
-  render() {
-    if (!this.state) {
-      return (
-        <Redirect to = {{
-          pathname: '/login',
-        }} />
-      );
-    }
+  state = {
+    backgroundColor: 'rgb(0, 188, 212)',
+  };
 
+  render() {
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td colSpan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
+      <Paper zDepth = { 2 } >
+        <AppBar
+          title = "RESERVED"
+          titleStyle = {{
+            fontSize: 20,
+          }}
+          style = {{
+            backgroundColor: this.state.backgroundColor,
+          }}
+          iconElementLeft = {
+            <IconButton><LocalCarWash /></IconButton>
+          } />
+        <List>
+          <ListItem
+            primaryText = "RESERVATION #"
+            secondaryText = "ADFNNCF123"
+          />
+          <ListItem
+            primaryText = "Location"
+            secondaryText = "Exchange, Secaucus"
+          />
+          <ListItem
+            primaryText = "Service"
+            secondaryText = "Prestige, Car Wash, Lube Service"
+          />
+          <ListItem
+            primaryText = "Date"
+            secondaryText = "2017-05-06"
+          />
+          <ListItem
+            primaryText = "Vehicle"
+            secondaryText = "Y96EUV"
+          />
+          <ListItem
+            primaryText = "Price"
+            secondaryText = "$56.80"
+          />
+        </List>
+      </Paper>
     );
   }
 }
