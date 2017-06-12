@@ -3,6 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import LocalCarWash from 'material-ui/svg-icons/maps/local-car-wash';
+import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import { List, ListItem } from 'material-ui/List';
 
 
@@ -23,6 +24,9 @@ class ReservationPage extends React.Component {
             backgroundColor: this.state.backgroundColor,
           }}
           iconElementLeft = {
+            <IconButton><HardwareKeyboardArrowLeft /></IconButton>
+          }
+          iconElementRight = {
             <IconButton><LocalCarWash /></IconButton>
           } />
         <List>

@@ -31,6 +31,7 @@ export default (state = user, action) => {
 
       global.eGobieUserId = user.id;
       global.eGobieUserToken = user.password;
+      global.eGobieUserType = user.type;
 
       return Object.assign({}, state, {
         signedIn: true,

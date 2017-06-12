@@ -8,6 +8,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import LoginPage from './Page/Login';
 import ReservationListPage from './Page/ReservationList';
+import ReservationPage from './Page/Reservation';
 import eGobieReducer from './Reducer';
 import eGobieSaga from './Saga';
 
@@ -32,6 +33,17 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 sagaMiddleware.run(eGobieSaga);
 
+const requireAuth = (nextState, replace) => {
+  // if (global.eGobieUserType !== 'EGOBIE') {
+  //   replace({
+  //     pathname: '/login',
+  //     state: {
+  //       nextPathname: nextState.location.pathname
+  //     },
+  //   });
+  // }
+}
+
 class App extends React.Component {
   render() {
     return (
@@ -39,9 +51,10 @@ class App extends React.Component {
         <Provider store = { store } >
           <Router history = { history }>
             <div>
-              <Route exact path = "/" component = { ReservationListPage } />
+              <Route exact path = "/" component = { ReservationListPage } onEnter = { requireAuth } />
+              <Route path = "/reservations" component = { ReservationListPage } onEnter = { requireAuth } />
+              <Route path = "/reservation/:id" component = { ReservationPage } onEnter = { requireAuth } />
               <Route path = "/login" component = { LoginPage } />
-              <Route path = "/reservation" component = { ReservationListPage } />
             </div>
           </Router>
         </Provider>

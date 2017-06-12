@@ -201,6 +201,7 @@ class ReservationListPage extends React.Component {
 
             return (
               <Chip
+                key = { i }
                 onRequestDelete = { () => { this.deselectLocation(locationId); } }
                 style = {{
                   marginTop: 4,
