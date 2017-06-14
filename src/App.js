@@ -37,14 +37,14 @@ const history = syncHistoryWithStore(browserHistory, store);
 sagaMiddleware.run(eGobieSaga);
 
 const requireAuth = (nextState, replace) => {
-  if (global.eGobieUserType !== 'RESIDENTIAL') {
-    replace({
-      pathname: '/login',
-      state: {
-        nextPathname: nextState.location.pathname
-      },
-    });
-  }
+  // if (global.eGobieUserType !== 'RESIDENTIAL') {
+  //   replace({
+  //     pathname: '/login',
+  //     state: {
+  //       nextPathname: nextState.location.pathname
+  //     },
+  //   });
+  // }
 }
 
 class App extends React.Component {

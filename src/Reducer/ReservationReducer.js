@@ -7,6 +7,7 @@ const reservation = {
   done: [],
   all: [],
   loading: false,
+  changingStatus: false,
 };
 
 const RESERVED = 'RESERVED';
@@ -53,7 +54,7 @@ const serializeReservations = (reservations) => {
 export default (state = reservation, action) => {
   switch (action.type) {
     case Action.RESERVATION_GET_ALL:
-      return Object.assign({
+      return Object.assign({}, state, {
         loading: true,
       });
     
@@ -67,12 +68,24 @@ export default (state = reservation, action) => {
 
     case Action.RESERVATION_GET_ALL_FAIL:
     case Action.RESERVATION_GET_ALL_ERROR:
-      return Object.assign({
+      return Object.assign({}, state, {
         reserved: [],
         inProgress: [],
         done: [],
         all: [],
         loading: false,
+      });
+
+    case Action.RESERVATION_CHANGE_STATUS:
+      return Object.assign({}, state, {
+        changingStatus: true,
+      });
+
+    case Action.RESERVATION_CHANGE_STATUS_SUCCESS:
+    case Action.RESERVATION_CHANGE_STATUS_FAIL:
+    case Action.RESERVATION_CHANGE_STATUS_ERROR:
+      return Object.assign({}, state, {
+        changingStatus: false,
       });
 
     default:

@@ -1,20 +1,68 @@
 import React from 'react';
 import { Link } from 'react-router'
+import { connect } from 'react-redux';
 
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
+import Dialog from 'material-ui/Dialog';
+import LinearProgress from 'material-ui/LinearProgress';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import LocalCarWash from 'material-ui/svg-icons/maps/local-car-wash';
 import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import { List, ListItem } from 'material-ui/List';
 
+import * as ReservationAction from '../Action/ReservationAction';
+
 
 class ReservationPage extends React.Component {
   state = {
+    reservation: {},
+    openConfirmModal: false,
     backgroundColor: 'rgb(0, 188, 212)',
   };
 
-  render() {
+  showConfirmModal = () => {
+    this.setState({
+      openConfirmModal: true,
+    });
+  }
+
+  hideConfirmModal = () => {
+    this.setState({
+      openConfirmModal: false,
+    });
+  }
+
+  changeStatus = () => {
+    this.hideConfirmModal();
+    this.props.changeStatus();
+  }
+
+  renderConfirmModal() {
+    return (
+      <Dialog
+        title = { 'WARNING' }
+        actions = {[
+          <FlatButton
+            label = "Cancel"
+            onTouchTap = { this.hideConfirmModal }
+          />,
+          <FlatButton
+            label = "Confirm"
+            secondary = { true }
+            onTouchTap = { this.changeStatus }
+          />,
+        ]}
+        modal = { true }
+        open = { this.state.openConfirmModal } >
+        Are you sure to start this reservation?
+      </Dialog>
+    );
+  }
+
+  renderReservationDetail() {
     return (
       <Paper zDepth = { 2 } >
         <AppBar
@@ -35,10 +83,6 @@ class ReservationPage extends React.Component {
           } />
         <List>
           <ListItem
-            primaryText = "RESERVATION #"
-            secondaryText = "ADFNNCF123"
-          />
-          <ListItem
             primaryText = "Location"
             secondaryText = "Exchange, Secaucus"
           />
@@ -47,8 +91,13 @@ class ReservationPage extends React.Component {
             secondaryText = "Prestige, Car Wash, Lube Service"
           />
           <ListItem
+            primaryText = "Customer"
+            secondaryText = "Bo Huang 2019120383"
+          />
+          <ListItem
             primaryText = "Date"
-            secondaryText = "2017-05-06"
+            secondaryTextLines = { 2 }
+            secondaryText = "2017-05-06 (Customer wants to pick up car by 01:00 P.M.)"
           />
           <ListItem
             primaryText = "Vehicle"
@@ -59,9 +108,60 @@ class ReservationPage extends React.Component {
             secondaryText = "$56.80"
           />
         </List>
+        <div style = {{
+          display: 'flex',
+          justifyContent: 'center',
+        }} >
+          <RaisedButton
+            label = "START"
+            primary = { true }
+            onClick = { this.showConfirmModal }
+            style = {{
+              width: 250,
+              marginTop: 15,
+              marginBottom: 15,
+            }} />
+        </div>
       </Paper>
+    );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      reservation: nextProps.reservation,
+    });
+  }
+
+  render() {
+    let { reservation } = this.state;
+
+    return (
+      <div className="egobie-reservation-detail-page">
+        { this.renderReservationDetail() }
+        { this.renderConfirmModal() }
+        <Dialog modal = { true } open = { !!reservation.changingStatus } >
+          <LinearProgress mode = { "indeterminate" } />
+        </Dialog>
+      </div>
     );
   }
 }
 
-export default ReservationPage;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    reservation: state.reservation,
+    ...ownProps,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeStatus: () => {
+      dispatch({
+        type: ReservationAction.RESERVATION_CHANGE_STATUS,
+      })
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReservationPage);

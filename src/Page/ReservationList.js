@@ -348,7 +348,7 @@ class ReservationListPage extends React.Component {
       <div className = "egobie-reservation-list-page">
         { this.renderFilter() }
         { this.renderReservationList() }
-        <Dialog modal = { true } open = { reservation.loading } >
+        <Dialog modal = { true } open = { !!reservation.loading } >
           <LinearProgress mode = { "indeterminate" } />
         </Dialog>
       </div>
