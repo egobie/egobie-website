@@ -1,9 +1,13 @@
-const baseUrl = 'http://localhost:8000';
-// const baseUrl = 'https://api.egobie.com';
+// const baseUrl = 'http://localhost:8000';
+const baseUrl = 'https://api.egobie.com';
 
 export default (method, url, body, headers) => {
   let _headers = headers ? headers : {};
   let _body = body ? body : {};
+  let _base = global.eGobieUserId ? {
+    userId: global.eGobieUserId,
+    userToken: global.eGobieUserToken,
+  } : {};
 
   return fetch(`${baseUrl}/${url}`, {
     method: method,
@@ -11,10 +15,7 @@ export default (method, url, body, headers) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     }),
-    body: JSON.stringify(Object.assign(_body, {
-      userId: global.eGobieUserId ? global.eGobieUserId : 1,
-      userToken: global.eGobieUserToken ? global.eGobieUserToken : 'bc2543',
-    })),
+    body: JSON.stringify(Object.assign(_body, _base)),
   })
   .then((response) => {
     if (response.status >= 200 && response.status < 300) {

@@ -3,7 +3,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga'
 import { Router, Route, browserHistory } from 'react-router/lib';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import LoginPage from './Page/Login';
@@ -21,7 +21,10 @@ const store = createStore(
     ...eGobieReducer,
     routing: routerReducer
   }),
-  applyMiddleware(sagaMiddleware)
+  applyMiddleware(
+    routerMiddleware(browserHistory),
+    sagaMiddleware,
+  ),
 );
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -34,14 +37,14 @@ const history = syncHistoryWithStore(browserHistory, store);
 sagaMiddleware.run(eGobieSaga);
 
 const requireAuth = (nextState, replace) => {
-  // if (global.eGobieUserType !== 'EGOBIE') {
-  //   replace({
-  //     pathname: '/login',
-  //     state: {
-  //       nextPathname: nextState.location.pathname
-  //     },
-  //   });
-  // }
+  if (global.eGobieUserType !== 'RESIDENTIAL') {
+    replace({
+      pathname: '/login',
+      state: {
+        nextPathname: nextState.location.pathname
+      },
+    });
+  }
 }
 
 class App extends React.Component {
@@ -50,12 +53,10 @@ class App extends React.Component {
       <MuiThemeProvider>
         <Provider store = { store } >
           <Router history = { history }>
-            <div>
-              <Route exact path = "/" component = { ReservationListPage } onEnter = { requireAuth } />
-              <Route path = "/reservations" component = { ReservationListPage } onEnter = { requireAuth } />
-              <Route path = "/reservation/:id" component = { ReservationPage } onEnter = { requireAuth } />
-              <Route path = "/login" component = { LoginPage } />
-            </div>
+            <Route exact path = "/" component = { ReservationListPage } onEnter = { requireAuth } />
+            <Route path = "/reservations" component = { ReservationListPage } onEnter = { requireAuth } />
+            <Route path = "/reservation/:id" component = { ReservationPage } onEnter = { requireAuth } />
+            <Route path = "/login" component = { LoginPage } />
           </Router>
         </Provider>
       </MuiThemeProvider>

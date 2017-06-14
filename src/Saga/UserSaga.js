@@ -1,4 +1,5 @@
 import { put, cancelled, takeLatest } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 
 import * as UserAction from '../Action/UserAction';
 import * as ReservationAction from '../Action/ReservationAction';
@@ -15,6 +16,7 @@ function* signInTask(action) {
         type: UserAction.USER_SIGN_IN_SUCCESS,
         user: resp.body,
       });
+      yield put(push('/reservations'))
       yield put({
         type: ReservationAction.RESERVATION_GET_ALL,
       });

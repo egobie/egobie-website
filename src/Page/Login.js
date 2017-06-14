@@ -1,10 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import AppBar from 'material-ui/AppBar';
+import Dialog from 'material-ui/Dialog';
+import LinearProgress from 'material-ui/LinearProgress';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import ActionAccountCircle from 'material-ui/svg-icons/action/account-circle';
 import RaisedButton from 'material-ui/RaisedButton';
+
+import * as UserAction from '../Action/UserAction';
+
 
 const regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -18,6 +25,7 @@ class LoginPage extends React.Component {
   );
 
   state = {
+    user: null,
     formState: {
       email: true,
       password: true,
@@ -79,7 +87,7 @@ class LoginPage extends React.Component {
       return;
     }
 
-    console.log(this.state.formValue);
+    this.props.signIn(email, password);
   }
 
   handleKeyDown = (evt) => {
@@ -139,13 +147,44 @@ class LoginPage extends React.Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      user: nextProps.user,
+    });
+  }
+
   render() {
+    let { user } = this.state;
+
     return (
       <div className="egobie-login-page">
         { this.renderSignInForm() }
+        <Dialog
+          modal = { true }
+          open = { !!user && user.loading } >
+          <LinearProgress mode = { "indeterminate" } />
+        </Dialog>
       </div>
     );
   }
 }
 
-export default LoginPage;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.user,
+    ...ownProps,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signIn: (email, password) => {
+      dispatch({
+        type: UserAction.USER_SIGN_IN,
+        email, password,
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
