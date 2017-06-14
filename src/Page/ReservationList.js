@@ -1,4 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+
 import { List, ListItem } from 'material-ui/List';
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
@@ -234,9 +237,12 @@ class ReservationListPage extends React.Component {
         <SelectField
           multiple = { true }
           maxHeight = { 300 }
-          value = { selectedLocations}
+          value = { selectedLocations }
           onChange = { this.selectLocation }
-          selectionRenderer = { this.selectionRenderer } 
+          selectionRenderer = { this.selectionRenderer }
+          menuStyle = {{
+            borderWidth: 1,
+          }}
           style = {{
             marginTop: 5,
             marginLeft: 20,
@@ -290,24 +296,28 @@ class ReservationListPage extends React.Component {
           } />
         <List>
           <Subheader>Pick Up By 01:00 P.M.</Subheader>
-          <ListItem
-            primaryText = "Premium Plus"
-            secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
-            secondaryTextLines = { 2 }
-            leftIcon = { <LocalCarWash /> }
-            rightIcon = { <HardwareKeyboardArrowRight /> }
-          />
+          <Link to = { '/reservation/1' }>
+            <ListItem
+              primaryText = "Premium Plus"
+              secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
+              secondaryTextLines = { 2 }
+              leftIcon = { <LocalCarWash /> }
+              rightIcon = { <HardwareKeyboardArrowRight /> }
+            />
+          </Link>
         </List>
         <Divider inset = { true } />
         <List>
           <Subheader>Pick Up By 05:00 P.M.</Subheader>
-          <ListItem
-            primaryText = "Premium Plus"
-            secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
-            secondaryTextLines = { 2 }
-            leftIcon = { <LocalCarWash /> }
-            rightIcon = { <HardwareKeyboardArrowRight /> }
-          />
+          <Link to = { '/reservation/1' }>
+            <ListItem
+              primaryText = "Premium Plus"
+              secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
+              secondaryTextLines = { 2 }
+              leftIcon = { <LocalCarWash /> }
+              rightIcon = { <HardwareKeyboardArrowRight /> }
+            />
+          </Link>
         </List>
       </Paper>
     );
@@ -323,4 +333,11 @@ class ReservationListPage extends React.Component {
   }
 }
 
-export default ReservationListPage;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    reservations: state.reservation.reserved,
+    ...ownProps,
+  };
+};
+
+export default connect(mapStateToProps, null)(ReservationListPage);

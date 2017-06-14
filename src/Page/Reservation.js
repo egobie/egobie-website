@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router'
+
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
@@ -24,7 +26,9 @@ class ReservationPage extends React.Component {
             backgroundColor: this.state.backgroundColor,
           }}
           iconElementLeft = {
-            <IconButton><HardwareKeyboardArrowLeft /></IconButton>
+            <Link to = '/reservations'>
+              <IconButton><HardwareKeyboardArrowLeft /></IconButton>
+            </Link>
           }
           iconElementRight = {
             <IconButton><LocalCarWash /></IconButton>
