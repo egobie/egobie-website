@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { List, ListItem } from 'material-ui/List';
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
+import Dialog from 'material-ui/Dialog';
+import LinearProgress from 'material-ui/LinearProgress';
 import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
@@ -17,10 +19,13 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
 
+import * as ReservationAction from '../Action/ReservationAction';
+
 
 class ReservationListPage extends React.Component {
 
   state = {
+    reservation: {},
     selectedLocations: [],
     locations: [
       {
@@ -186,6 +191,12 @@ class ReservationListPage extends React.Component {
     }
   }
 
+  loadTasks = () => {
+    this.props.loadTasks({
+      locations: this.state.selectedLocations,
+    });
+  }
+
   renderSelectedLocations() {
     let { locations, selectedLocations } = this.state;
 
@@ -274,6 +285,7 @@ class ReservationListPage extends React.Component {
             primary = { true }
             fullWidth = { true }
             disabled = { selectedLocations.length === 0 }
+            onClick = { this.loadTasks }
             style = {{
               marginLeft: 20,
               marginRight: 20,
@@ -323,11 +335,22 @@ class ReservationListPage extends React.Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      reservation: nextProps.reservation,
+    });
+  }
+
   render() {
+    let { reservation } = this.state;
+
     return (
       <div className = "egobie-reservation-list-page">
         { this.renderFilter() }
         { this.renderReservationList() }
+        <Dialog modal = { true } open = { reservation.loading } >
+          <LinearProgress mode = { "indeterminate" } />
+        </Dialog>
       </div>
     );
   }
@@ -335,9 +358,20 @@ class ReservationListPage extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    reservations: state.reservation.reserved,
+    reservation: state.reservation,
     ...ownProps,
   };
 };
 
-export default connect(mapStateToProps, null)(ReservationListPage);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadTasks: (criteria) => {
+      dispatch({
+        type: ReservationAction.RESERVATION_GET_ALL,
+        criteria,
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReservationListPage);

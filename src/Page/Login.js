@@ -25,7 +25,7 @@ class LoginPage extends React.Component {
   );
 
   state = {
-    user: null,
+    user: {},
     formState: {
       email: true,
       password: true,
@@ -159,9 +159,7 @@ class LoginPage extends React.Component {
     return (
       <div className="egobie-login-page">
         { this.renderSignInForm() }
-        <Dialog
-          modal = { true }
-          open = { !!user && user.loading } >
+        <Dialog modal = { true } open = { user.loading } >
           <LinearProgress mode = { "indeterminate" } />
         </Dialog>
       </div>

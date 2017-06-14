@@ -5,6 +5,7 @@ const reservation = {
   reserved: [],
   inProgress: [],
   done: [],
+  all: [],
   loading: false,
 };
 
@@ -16,6 +17,7 @@ const serializeReservations = (reservations) => {
   let reserved = [];
   let inProgress = [];
   let done = [];
+  let all = [];
 
   for (let reservation of reservations) {
     let services = reservation.services.map((service) => {
@@ -32,6 +34,8 @@ const serializeReservations = (reservations) => {
       pickUpBy: reservation.pickUpBy,
     };
 
+    all.push(r);
+
     if (reservation.status === RESERVED) {
       reserved.push(r);
     } else if (reservation.status === IN_PROGRESS) {
@@ -42,7 +46,7 @@ const serializeReservations = (reservations) => {
   }
 
   return {
-    reserved, inProgress, done,
+    reserved, inProgress, done, all,
   }
 }
 
@@ -67,6 +71,7 @@ export default (state = reservation, action) => {
         reserved: [],
         inProgress: [],
         done: [],
+        all: [],
         loading: false,
       });
 

@@ -17,9 +17,6 @@ function* signInTask(action) {
         user: resp.body,
       });
       yield put(push('/reservations'))
-      yield put({
-        type: ReservationAction.RESERVATION_GET_ALL,
-      });
     } else {
       yield put({
         type: UserAction.USER_SIGN_IN_FAIL,
