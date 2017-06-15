@@ -2,23 +2,16 @@ import * as Action from '../Action/ReservationAction';
 
 
 const reservation = {
-  reserved: [],
-  inProgress: [],
-  done: [],
-  all: [],
+  tasksBy1: [],
+  tasksBy5: [],
+  locations: [],
   loading: false,
   changingStatus: false,
 };
 
-const RESERVED = 'RESERVED';
-const IN_PROGRESS = 'IN_PROGRESS';
-const DONE = 'DONE';
-
 const serializeReservations = (reservations) => {
-  let reserved = [];
-  let inProgress = [];
-  let done = [];
-  let all = [];
+  let tasksBy1 = [];
+  let tasksBy5 = [];
 
   for (let reservation of reservations) {
     let services = reservation.services.map((service) => {
@@ -26,28 +19,31 @@ const serializeReservations = (reservations) => {
     });
     let r = {
       id: reservation.id,
-      reservationId: reservation.reservationId,
-      location: reservation.location,
-      plate: reservation.plate,
+      address: reservation.address,
       price: `$${reservation.price}`,
       status: reservation.status,
-      services: services.length > 0 ? services.join(', ') : null,
+      firstName: reservation.firstName,
+      lastName: reservation.lastName,
+      phone: reservation.phone,
+      plate: reservation.plate,
+      state: reservation.state,
+      color: reservation.color,
+      year: reservation.year,
+      make: reservation.make,
+      model: reservation.model,
       pickUpBy: reservation.pickUpBy,
+      services: services.length > 0 ? services.join(', ') : null,
     };
 
-    all.push(r);
-
-    if (reservation.status === RESERVED) {
-      reserved.push(r);
-    } else if (reservation.status === IN_PROGRESS) {
-      inProgress.push(r);
-    } else if (reservation.status === DONE) {
-      done.push(r);
+    if (reservation.pickUpBy === 1) {
+      tasksBy1.push(r);
+    } else {
+      tasksBy5.push(r);
     }
   }
 
   return {
-    reserved, inProgress, done, all,
+    tasksBy1, tasksBy5,
   }
 }
 
@@ -69,10 +65,26 @@ export default (state = reservation, action) => {
     case Action.RESERVATION_GET_ALL_FAIL:
     case Action.RESERVATION_GET_ALL_ERROR:
       return Object.assign({}, state, {
-        reserved: [],
-        inProgress: [],
-        done: [],
-        all: [],
+        tasksBy1: [],
+        tasksBy5: [],
+        loading: false,
+      });
+
+    case Action.RESERVATION_GET_LOCATIONS:
+      return Object.assign({}, state, {
+        loading: true,
+      })
+
+    case Action.RESERVATION_GET_LOCATIONS_SUCCESS:
+      return Object.assign({}, state, {
+        locations: action.locations,
+        loading: false,
+      });
+
+    case Action.RESERVATION_GET_LOCATIONS_FAIL:
+    case Action.RESERVATION_GET_LOCATIONS_ERROR:
+      return Object.assign({}, state, {
+        locations: [],
         loading: false,
       });
 
