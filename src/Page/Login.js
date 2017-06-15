@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router'
 
 import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
@@ -20,10 +21,6 @@ const validateEmail = (email) => {
 };
 
 class LoginPage extends React.Component {
-  pageTitle = (
-    <h3>Sign In</h3>
-  );
-
   state = {
     user: {},
     formState: {

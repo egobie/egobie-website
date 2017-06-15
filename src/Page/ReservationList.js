@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import { List, ListItem } from 'material-ui/List';
@@ -201,17 +200,17 @@ class ReservationListPage extends React.Component {
         <List>
           <Subheader>Pick Up By 01:00 P.M.</Subheader>
           {
-            tasksBy1 && tasksBy1.map((task) => {
+            tasksBy1 && tasksBy1.map((task, i) => {
               return (
-                <Link to = { '/reservation/1' }>
-                  <ListItem
-                    primaryText = "Premium Plus"
-                    secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
-                    secondaryTextLines = { 2 }
-                    leftIcon = { <LocalCarWash /> }
-                    rightIcon = { <HardwareKeyboardArrowRight /> }
-                  />
-                </Link>
+                <ListItem
+                  key = { i }
+                  primaryText = "Premium Plus"
+                  secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
+                  secondaryTextLines = { 2 }
+                  leftIcon = { <LocalCarWash /> }
+                  rightIcon = { <HardwareKeyboardArrowRight /> }
+                  onClick = { () => { this.props.router.push('/reservation/1') } }
+                />
               )
             })
           }
@@ -220,17 +219,17 @@ class ReservationListPage extends React.Component {
         <List>
           <Subheader>Pick Up By 05:00 P.M.</Subheader>
           {
-            tasksBy5 && tasksBy5.map((task) => {
+            tasksBy5 && tasksBy5.map((task, i) => {
               return (
-                <Link to = { '/reservation/1' }>
-                  <ListItem
-                    primaryText = "Premium Plus"
-                    secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
-                    secondaryTextLines = { 2 }
-                    leftIcon = { <LocalCarWash /> }
-                    rightIcon = { <HardwareKeyboardArrowRight /> }
-                  />
-                </Link>
+                <ListItem
+                  key = { i }
+                  primaryText = "Premium Plus"
+                  secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
+                  secondaryTextLines = { 2 }
+                  leftIcon = { <LocalCarWash /> }
+                  rightIcon = { <HardwareKeyboardArrowRight /> }
+                  onClick = { () => { this.props.router.push('/reservation/2') } }
+                />
               )
             })
           }

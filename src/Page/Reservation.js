@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router'
 import { connect } from 'react-redux';
 
 import AppBar from 'material-ui/AppBar';
@@ -74,9 +73,9 @@ class ReservationPage extends React.Component {
             backgroundColor: this.state.backgroundColor,
           }}
           iconElementLeft = {
-            <Link to = '/reservations'>
-              <IconButton><HardwareKeyboardArrowLeft /></IconButton>
-            </Link>
+            <IconButton onTouchTap = { () => { this.props.router.goBack(); } }>
+              <HardwareKeyboardArrowLeft />
+            </IconButton>
           }
           iconElementRight = {
             <IconButton><LocalCarWash /></IconButton>
