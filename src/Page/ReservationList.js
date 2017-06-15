@@ -6,6 +6,7 @@ import { List, ListItem } from 'material-ui/List';
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
+import DatePicker from 'material-ui/DatePicker';
 import LinearProgress from 'material-ui/LinearProgress';
 import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -28,7 +29,21 @@ class ReservationListPage extends React.Component {
     tasks: [],
     locations: [],
     selectedLocations: [],
+    selectedDate: null,
     loading: false,
+  }
+
+  selectDate = (event, date) => {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    month = month < 10 ? `0${month}` : month;
+    day = day < 10 ? `0${day}` : day;
+
+    this.setState({
+      selectedDate: `${year}-${month}-${day}`,
+    });
   }
 
   selectLocation = (event, index, values) => {
@@ -52,15 +67,16 @@ class ReservationListPage extends React.Component {
   selectionRenderer = (values) => {
     switch (values.length) {
       case 0:
-        return 'Location List';
+        return 'Locations';
       default:
         return `${values.length} locations selected`;
     }
   }
 
-  loadTasks = () => {
-    this.props.loadTasks({
-      locations: this.state.selectedLocations,
+  getAllTasks = () => {
+    this.props.getAllTasks({
+      placeIds: this.state.selectedLocations,
+      day: this.state.selectedDate,
     });
   }
 
@@ -105,13 +121,20 @@ class ReservationListPage extends React.Component {
         paddingBottom: 4,
       }} >
         <AppBar
-          title = "CHOOSE LOCATION"
+          title = "SEARCH BY"
           titleStyle = {{
             fontSize: 18,
           }}
           iconElementLeft = {
             <IconButton><ContentFilterList /></IconButton>
           } />
+        <DatePicker
+          hintText = "Date"
+          onChange = { this.selectDate }
+          style = {{
+            marginTop: 5,
+            marginLeft: 20,
+          }} />
         <SelectField
           multiple = { true }
           maxHeight = { 300 }
@@ -247,10 +270,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadTasks: (criteria) => {
+    getAllTasks: (placeIds, day) => {
       dispatch({
         type: ReservationAction.RESERVATION_GET_ALL,
-        criteria,
+        placeIds, day,
       });
     },
   };
