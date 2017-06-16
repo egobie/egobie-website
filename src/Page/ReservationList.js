@@ -114,6 +114,7 @@ class ReservationListPage extends React.Component {
   }
 
   showReservationDetail = (reservation) => {
+    console.log(reservation.status)
     this.setState({
       reservation: reservation,
       showReservationDetail: true,
