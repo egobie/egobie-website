@@ -2,14 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import AppBar from 'material-ui/AppBar';
-import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
 import LinearProgress from 'material-ui/LinearProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import LocalCarWash from 'material-ui/svg-icons/maps/local-car-wash';
-import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { List, ListItem } from 'material-ui/List';
 
 import * as ReservationAction from '../Action/ReservationAction';
@@ -19,7 +18,6 @@ class ReservationPage extends React.Component {
   state = {
     reservation: {},
     openConfirmModal: false,
-    backgroundColor: 'rgb(0, 188, 212)',
   };
 
   showConfirmModal = () => {
@@ -32,6 +30,10 @@ class ReservationPage extends React.Component {
     this.setState({
       openConfirmModal: false,
     });
+  }
+
+  hideReservationDetailModal = () => {
+    this.props.onRequestClose();
   }
 
   changeStatus = () => {
@@ -62,49 +64,55 @@ class ReservationPage extends React.Component {
   }
 
   renderReservationDetail() {
+    let { reservation } = this.props;
+
     return (
-      <Paper zDepth = { 2 } >
+      <div>
         <AppBar
-          title = "RESERVED"
+          title = "DETAIL"
           titleStyle = {{
             fontSize: 20,
           }}
-          style = {{
-            backgroundColor: this.state.backgroundColor,
-          }}
           iconElementLeft = {
-            <IconButton onTouchTap = { () => { this.props.router.goBack(); } }>
-              <HardwareKeyboardArrowLeft />
-            </IconButton>
+            <IconButton><LocalCarWash /></IconButton>
           }
           iconElementRight = {
-            <IconButton><LocalCarWash /></IconButton>
+            <IconButton onTouchTap = { this.hideReservationDetailModal } >
+              <NavigationClose />
+            </IconButton>
           } />
         <List>
           <ListItem
-            primaryText = "Location"
-            secondaryText = "Exchange, Secaucus"
+            primaryText = "Service"
+            secondaryText = { reservation.services }
           />
           <ListItem
-            primaryText = "Service"
-            secondaryText = "Prestige, Car Wash, Lube Service"
+            primaryText = "Price"
+            secondaryText = { `${reservation.price}` }
+          />
+          <ListItem
+            primaryText = "Location"
+            secondaryTextLines = { 2 }
+            secondaryText = { reservation.address }
           />
           <ListItem
             primaryText = "Customer"
-            secondaryText = "Bo Huang 2019120383"
+            secondaryTextLines = { 2 }
+            secondaryText = { `${reservation.firstName} ${reservation.lastName} ${reservation.phone}` }
+          />
+          <ListItem
+            primaryText = "Vehicle"
+            secondaryTextLines = { 2 }
+            secondaryText = {
+              `${reservation.plate} (${reservation.make} ${reservation.model}, ${reservation.color})`
+            }
           />
           <ListItem
             primaryText = "Date"
             secondaryTextLines = { 2 }
-            secondaryText = "2017-05-06 (Customer wants to pick up car by 01:00 P.M.)"
-          />
-          <ListItem
-            primaryText = "Vehicle"
-            secondaryText = "Y96EUV"
-          />
-          <ListItem
-            primaryText = "Price"
-            secondaryText = "$56.80"
+            secondaryText = {
+              `${reservation.day} (Customer wants to pick up car by 0${reservation.pickUpBy}:00 P.M.)`
+            }
           />
         </List>
         <div style = {{
@@ -117,11 +125,10 @@ class ReservationPage extends React.Component {
             onClick = { this.showConfirmModal }
             style = {{
               width: 250,
-              marginTop: 15,
               marginBottom: 15,
             }} />
         </div>
-      </Paper>
+      </div>
     );
   }
 
@@ -148,7 +155,6 @@ class ReservationPage extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    reservation: state.reservation,
     ...ownProps,
   };
 };

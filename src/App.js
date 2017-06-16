@@ -55,7 +55,6 @@ class App extends React.Component {
           <Router history = { history }>
             <Route exact path = "/" component = { ReservationListPage } onEnter = { requireAuth } />
             <Route path = "/reservations" component = { ReservationListPage } onEnter = { requireAuth } />
-            <Route path = "/reservation/:id" component = { ReservationPage } onEnter = { requireAuth } />
             <Route path = "/login" component = { LoginPage } />
           </Router>
         </Provider>

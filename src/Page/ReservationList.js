@@ -20,6 +20,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Chip from 'material-ui/Chip';
 
 import * as ReservationAction from '../Action/ReservationAction';
+import Reservation from './Reservation';
 
 
 class ReservationListPage extends React.Component {
@@ -30,6 +31,8 @@ class ReservationListPage extends React.Component {
     selectedLocations: [],
     selectedDate: null,
     loading: false,
+    reservation: null,
+    showReservationDetail: false,
   }
 
   selectDate = (event, date) => {
@@ -73,10 +76,9 @@ class ReservationListPage extends React.Component {
   }
 
   getAllTasks = () => {
-    this.props.getAllTasks({
-      placeIds: this.state.selectedLocations,
-      day: this.state.selectedDate,
-    });
+    let { selectedLocations, selectedDate } = this.state;
+
+    this.props.getAllTasks(selectedLocations, selectedDate);
   }
 
   renderSelectedLocations() {
@@ -111,8 +113,22 @@ class ReservationListPage extends React.Component {
     );
   }
 
+  showReservationDetail = (reservation) => {
+    this.setState({
+      reservation: reservation,
+      showReservationDetail: true,
+    });
+  }
+
+  hideReservationDetail = () => {
+    this.setState({
+      reservation: null,
+      showReservationDetail: false,
+    });
+  }
+
   renderFilter() {
-    let { locations, selectedLocations } = this.state;
+    let { locations, selectedLocations, selectedDate } = this.state;
 
     return (
       <Paper style = {{
@@ -173,8 +189,8 @@ class ReservationListPage extends React.Component {
             label = "SEARCH"
             primary = { true }
             fullWidth = { true }
-            disabled = { selectedLocations.length === 0 }
-            onClick = { this.loadTasks }
+            disabled = { !selectedDate || selectedLocations.length === 0 }
+            onClick = { this.getAllTasks }
             style = {{
               marginLeft: 20,
               marginRight: 20,
@@ -204,12 +220,12 @@ class ReservationListPage extends React.Component {
               return (
                 <ListItem
                   key = { i }
-                  primaryText = "Premium Plus"
-                  secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
+                  primaryText = { task.services }
+                  secondaryText = { `${task.plate} (${task.make} ${task.model}, ${task.color})` }
                   secondaryTextLines = { 2 }
                   leftIcon = { <LocalCarWash /> }
                   rightIcon = { <HardwareKeyboardArrowRight /> }
-                  onClick = { () => { this.props.router.push('/reservation/1') } }
+                  onClick = { () => { this.showReservationDetail(task) } }
                 />
               )
             })
@@ -223,18 +239,36 @@ class ReservationListPage extends React.Component {
               return (
                 <ListItem
                   key = { i }
-                  primaryText = "Premium Plus"
-                  secondaryText = "Y96EUV, Honda Accord, Gray, 2017"
+                  primaryText = { task.services }
+                  secondaryText = { `${task.plate} (${task.make} ${task.model}, ${task.color})` }
                   secondaryTextLines = { 2 }
                   leftIcon = { <LocalCarWash /> }
                   rightIcon = { <HardwareKeyboardArrowRight /> }
-                  onClick = { () => { this.props.router.push('/reservation/2') } }
+                  onClick = { () => { this.showReservationDetail(task) } }
                 />
               )
             })
           }
         </List>
       </Paper>
+    );
+  }
+
+  renderReservationDetail() {
+    return (
+      <Dialog
+        autoScrollBodyContent = { true }
+        open = { this.state.showReservationDetail }
+        onRequestClose = { this.hideReservationDetail  }
+        contentStyle = {{
+          width: '95%',
+          paddingLeft: -10,
+        }} >
+        <Reservation
+          reservation = { this.state.reservation }
+          onRequestClose = { this.hideReservationDetail }
+        />
+      </Dialog>
     );
   }
 
@@ -252,6 +286,7 @@ class ReservationListPage extends React.Component {
       <div className = "egobie-reservation-list-page">
         { this.renderFilter() }
         { this.renderReservationList() }
+        { this.renderReservationDetail() }
         <Dialog modal = { true } open = { !!this.state.loading } >
           <LinearProgress mode = { "indeterminate" } />
         </Dialog>

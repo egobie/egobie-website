@@ -8,4 +8,5 @@ div.egobie-reservation-list-page {
   height: 100vh; }
 
 div.egobie-reservation-detail-page {
-  height: 100vh; }
+  height: 100vh;
+  margin: -15px; }

@@ -20,6 +20,7 @@ const serializeReservations = (reservations) => {
     let r = {
       id: reservation.id,
       address: reservation.address,
+      day: reservation.day,
       price: `$${reservation.price}`,
       status: reservation.status,
       firstName: reservation.firstName,

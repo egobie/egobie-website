@@ -39,7 +39,7 @@ function* getAllTasksTask(action) {
     if (resp.status === 200) {
       yield put({
         type: ReservationAction.RESERVATION_GET_ALL_SUCCESS,
-        reservations: resp.body,
+        reservations: resp.body ? resp.body : [],
       });
     } else {
       yield put({
