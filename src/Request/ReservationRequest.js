@@ -12,3 +12,11 @@ export const getAllTasks = (placeIds, day) => {
 export const getLocations = () => {
   return send('POST', `${prefix}/place`);
 };
+
+export const startTask = (serviceId) => {
+  return send('POST', `${prefix}/task/progress`);
+};
+
+export const finishTask = (serviceId) => {
+  return send('POST', `${prefix}/task/done`);
+};

@@ -52,9 +52,12 @@ export default (state = reservation, action) => {
   switch (action.type) {
     case Action.RESERVATION_GET_ALL:
       return Object.assign({}, state, {
+        tasksBy1: [],
+        tasksBy5: [],
         loading: true,
+        changingStatus: false,
       });
-    
+
     case Action.RESERVATION_GET_ALL_SUCCESS:
       let reservations = serializeReservations(action.reservations);
 
@@ -66,8 +69,6 @@ export default (state = reservation, action) => {
     case Action.RESERVATION_GET_ALL_FAIL:
     case Action.RESERVATION_GET_ALL_ERROR:
       return Object.assign({}, state, {
-        tasksBy1: [],
-        tasksBy5: [],
         loading: false,
       });
 

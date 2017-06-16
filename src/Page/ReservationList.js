@@ -278,6 +278,7 @@ class ReservationListPage extends React.Component {
       tasksBy5: nextProps.tasksBy5,
       locations: nextProps.locations,
       loading: nextProps.loading,
+      showReservationDetail: !(!!nextProps.tasksBy1 && !!nextProps.tasksBy5),
     });
   }
 

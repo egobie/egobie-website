@@ -18,6 +18,7 @@ class ReservationPage extends React.Component {
   state = {
     reservation: {},
     openConfirmModal: false,
+    changingStatus: false,
   };
 
   showConfirmModal = () => {
@@ -37,8 +38,10 @@ class ReservationPage extends React.Component {
   }
 
   changeStatus = () => {
+    let { reservation } = this.state;
+
     this.hideConfirmModal();
-    this.props.changeStatus();
+    this.props.changeStatus(reservation.status, reservation.id);
   }
 
   renderConfirmModal() {
@@ -69,7 +72,7 @@ class ReservationPage extends React.Component {
     return (
       <div>
         <AppBar
-          title = "DETAIL"
+          title = "RESERVATION"
           titleStyle = {{
             fontSize: 20,
           }}
@@ -120,8 +123,10 @@ class ReservationPage extends React.Component {
           justifyContent: 'center',
         }} >
           <RaisedButton
-            label = "START"
-            primary = { true }
+            label = { reservation.status === 'RESERVED' ? 'START' : 'DONE' }
+            primary = { reservation.status === 'RESERVED' }
+            secondary = { reservation.status === 'IN_PROGRESS' }
+            disabled = { reservation.status === 'DONE' }
             onClick = { this.showConfirmModal }
             style = {{
               width: 250,
@@ -135,17 +140,18 @@ class ReservationPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       reservation: nextProps.reservation,
+      changingStatus: nextProps.changingStatus,
     });
   }
 
   render() {
-    let { reservation } = this.state;
+    let { reservation, changingStatus } = this.state;
 
     return (
       <div className="egobie-reservation-detail-page">
         { this.renderReservationDetail() }
         { this.renderConfirmModal() }
-        <Dialog modal = { true } open = { !!reservation.changingStatus } >
+        <Dialog modal = { true } open = { changingStatus } >
           <LinearProgress mode = { "indeterminate" } />
         </Dialog>
       </div>
@@ -155,15 +161,18 @@ class ReservationPage extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    changingStatus: state.reservation.changingStatus,
     ...ownProps,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeStatus: () => {
+    changeStatus: (status, serviceId) => {
+      console.log(status);
       dispatch({
         type: ReservationAction.RESERVATION_CHANGE_STATUS,
+        status, serviceId,
       })
     },
   };
