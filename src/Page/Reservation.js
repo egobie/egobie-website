@@ -38,13 +38,17 @@ class ReservationPage extends React.Component {
   }
 
   changeStatus = () => {
-    let { reservation } = this.state;
+    let { reservation, placeIds, day } = this.props;
 
     this.hideConfirmModal();
-    this.props.changeStatus(reservation.status, reservation.id);
+    this.props.changeStatus(reservation.status, reservation.id, placeIds, day);
   }
 
   renderConfirmModal() {
+    let { reservation } = this.props;
+    let text = reservation.status === 'RESERVED' ?
+      'Are you sure to start this reservation?' : 'Are you sure to finish this reservation?'
+
     return (
       <Dialog
         title = { 'WARNING' }
@@ -61,7 +65,7 @@ class ReservationPage extends React.Component {
         ]}
         modal = { true }
         open = { this.state.openConfirmModal } >
-        Are you sure to start this reservation?
+        { text }
       </Dialog>
     );
   }
@@ -168,11 +172,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeStatus: (status, serviceId) => {
-      console.log(status);
+    changeStatus: (status, serviceId, placeIds, day) => {
       dispatch({
         type: ReservationAction.RESERVATION_CHANGE_STATUS,
-        status, serviceId,
+        status, serviceId, placeIds, day
       })
     },
   };

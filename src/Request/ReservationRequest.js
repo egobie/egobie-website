@@ -14,9 +14,13 @@ export const getLocations = () => {
 };
 
 export const startTask = (serviceId) => {
-  return send('POST', `${prefix}/task/progress`);
+  return send('POST', `${prefix}/task/progress`, {
+    serviceId,
+  });
 };
 
 export const finishTask = (serviceId) => {
-  return send('POST', `${prefix}/task/done`);
+  return send('POST', `${prefix}/task/done`, {
+    serviceId,
+  });
 };

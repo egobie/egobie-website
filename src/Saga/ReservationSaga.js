@@ -76,6 +76,8 @@ function* changeTaskStatusTask(action) {
       });
       yield put({
         type: ReservationAction.RESERVATION_GET_ALL,
+        placeIds: action.placeIds,
+        day: action.day,
       })
     } else {
       yield put({

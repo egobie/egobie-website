@@ -114,10 +114,9 @@ class ReservationListPage extends React.Component {
   }
 
   showReservationDetail = (reservation) => {
-    console.log(reservation.status)
     this.setState({
-      reservation: reservation,
       showReservationDetail: true,
+      reservation,
     });
   }
 
@@ -256,6 +255,8 @@ class ReservationListPage extends React.Component {
   }
 
   renderReservationDetail() {
+    let { selectedLocations, selectedDate } = this.state;
+
     return (
       <Dialog
         autoScrollBodyContent = { true }
@@ -267,6 +268,8 @@ class ReservationListPage extends React.Component {
         }} >
         <Reservation
           reservation = { this.state.reservation }
+          placeIds = { selectedLocations }
+          day = { selectedDate }
           onRequestClose = { this.hideReservationDetail }
         />
       </Dialog>
